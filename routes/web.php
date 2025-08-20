@@ -17,8 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // temporary 
     // Board routes
     Route::get('boards', [BoardController::class, 'boards'])->name('boards');
-    Route::get('boards/{boardId}', [BoardController::class, 'board'])->name('board'); // Fixed name
-    Route::post('boards', [BoardController::class, 'create'])->name('boards.create'); // Better naming
+    Route::get('boards/{boardId}', [BoardController::class, 'board'])->name('board'); 
+    Route::post('boards', [BoardController::class, 'create'])->name('boards.create'); 
     Route::put('boards/{boardId}', [BoardController::class, 'update'])->name('boards.update');
     Route::delete('boards/{boardId}', [BoardController::class, 'delete'])->name('boards.delete');
 

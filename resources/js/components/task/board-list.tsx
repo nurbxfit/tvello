@@ -1,12 +1,13 @@
 import { User2 } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 import { Board } from "@/types/task";
+import { FormPopover } from "./form-popover";
 
 type BoardListProps = {
     boards: Array<Board>
 }
 
-export const BoardList = async ({ boards }: BoardListProps) => {
+export const BoardList = ({ boards }: BoardListProps) => {
 
     return <div className="space-y-4">
         <div className="flex items-center font-semibold text-lg text-neutral-700">
@@ -35,24 +36,24 @@ export const BoardList = async ({ boards }: BoardListProps) => {
                 </a>
             ))}
             {/*  */}
-            {/* <FormPopover> */}
-            <div role="button"
-                className="aspect-video relative h-full w-full bg-muted
+            <FormPopover>
+                <div role="button"
+                    className="aspect-video relative h-full w-full bg-muted
                 rounded-sm flex flex-col gap-y-1 items-center justify-center
                 hover:opacity-75 transition
                 "
-            >
-                <p className="text-sm">Create new board</p>
-                <span className="text-xs">
-                    5 remaining
-                </span>
-                {/* <Hint sideOffset={40}
+                >
+                    <p className="text-sm">Create new board</p>
+                    <span className="text-xs">
+                        5 remaining
+                    </span>
+                    {/* <Hint sideOffset={40}
                         description="Free workspaces up to 5 boards. Upgrade this workspace for unlimited boards"
                     >
                         <HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
                     </Hint> */}
-            </div>
-            {/* </FormPopover> */}
+                </div>
+            </FormPopover>
         </div>
     </div>
 }

@@ -29,7 +29,7 @@ class BoardController extends Controller {
             ->where('id', $boardId)
             ->first();
 
-        if($board) {
+        if(!$board) {
             abort(404,"Board not found");
         }
 

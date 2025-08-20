@@ -4,16 +4,15 @@ import type { Board } from "@/types/task";
 import { Head } from "@inertiajs/react";
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
+
     {
         title: 'Boards',
         href: '/boards',
     },
 ];
 export default function BoardPage({ board }: { board?: Board }) {
+
+
 
     if (!board) {
         return <AppLayout breadcrumbs={breadcrumbs}>
@@ -23,10 +22,16 @@ export default function BoardPage({ board }: { board?: Board }) {
         </AppLayout>
     }
 
+
+    breadcrumbs.push({
+        title: board?.title,
+        href: `/boards/${board.title}`
+    })
+
     return <AppLayout breadcrumbs={breadcrumbs}>
         <Head title={`${board.title} | Boards`} />
         <div>
-            This is board page for {board.id}
+            This is board page for:  {board.title}
         </div>
     </AppLayout>
 }

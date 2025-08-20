@@ -7,10 +7,6 @@ import { Suspense } from "react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
-    },
-    {
         title: 'Boards',
         href: '/boards',
     },
