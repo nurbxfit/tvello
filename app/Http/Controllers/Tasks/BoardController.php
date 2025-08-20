@@ -19,7 +19,7 @@ class BoardController extends Controller {
         ->orderBy('created_at', 'desc')
         ->get();
 
-        return Innertia::render("/boards/boards",[
+        return Inertia::render("boards/boards",[
             "boards"=> $boardList
         ]);
     }
@@ -33,7 +33,7 @@ class BoardController extends Controller {
             abort(404,"Board not found");
         }
 
-        return Innertia::render("/boards/board",[
+        return Inertia::render("boards/board",[
             "board"=> $board
         ]);
     }
@@ -103,18 +103,18 @@ class BoardController extends Controller {
         return redirect("/boards");
     }
     
-    public function searchBoards(Request $request): Response
-    {
-        $query = $request->get('q');
+    // public function searchBoards(Request $request): Response
+    // {
+    //     $query = $request->get('q');
         
-        $boards = DB::table('task_board')
-            ->where('title', 'LIKE', "%{$query}%")
-            ->orWhere('image_user_name', 'LIKE', "%{$query}%")
-            ->get();
+    //     $boards = DB::table('task_board')
+    //         ->where('title', 'LIKE', "%{$query}%")
+    //         ->orWhere('image_user_name', 'LIKE', "%{$query}%")
+    //         ->get();
 
-        return Inertia::render("/boards/search-results", [
-            "boards" => $boards,
-            "query" => $query
-        ]);
-    }
+    //     return Inertia::render("boards/search-results", [
+    //         "boards" => $boards,
+    //         "query" => $query
+    //     ]);
+    // }
 }
