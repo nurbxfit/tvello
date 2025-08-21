@@ -1,11 +1,16 @@
 import { cn } from "@/lib/utils"
 import { ListWithCards } from "@/types/task"
+import { ListActions } from "./list-actions"
 
 type ListItemProps = {
     list: ListWithCards
     index: number
 }
 export const ListItem = ({ list, index }: ListItemProps) => {
+
+    const onAddCard = () => {
+        // do something ?
+    }
     return (
         <li className="shrink-0 h-full w-[272px] select-none">
             <div
@@ -14,7 +19,7 @@ export const ListItem = ({ list, index }: ListItemProps) => {
                     <div className="w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent">
                         {list.title}
                     </div>
-                    {/* <ListOptions onAddCard={onAddCard} list={list} /> */}
+                    <ListActions onAddCard={onAddCard} list={list} />
                 </div>
                 <ol
                     className={

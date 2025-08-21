@@ -36,4 +36,38 @@ class ListController extends Controller {
     
         return redirect()->route('board',$boardId);
     }
+
+    public function update(Request $request, string $boardId, string $listId) : RedirectResponse {
+        $validated = $request->validate([
+            "title" =>'sometimes|string|max:255',
+            "order" =>'sometimes|number'
+        ]);
+        // Add updated timestamp
+        $validated['updated_at'] = now();
+
+        $affected = DB::table('task_list')
+            ->where('id', $listId)
+            ->update($validated);
+
+        if ($affected === 0) {
+            abort(404, 'Board not found');
+        }
+
+         return redirect()->route('board',$boardId);
+    }
+
+
+    public function destroy(Request $request, string $boardId, string $listId) : RedirectResponse {
+
+        // dd($listId);
+        $affected = DB::table('task_list')
+        -> where('id',$listId)
+        ->delete();
+
+        if($affected == 0){
+            abort(404,'List not found');
+        }
+
+        return redirect()->route('board',$boardId);
+    }
 }

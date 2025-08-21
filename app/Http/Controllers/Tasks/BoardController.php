@@ -106,7 +106,7 @@ class BoardController extends Controller {
         return redirect("/boards/{$boardId}");
     }
 
-    public function delete(Request $request, string $boardId): RedirectResponse
+    public function destroy(Request $request, string $boardId): RedirectResponse
     {
         $affected = DB::table('task_board')
             ->where('id', $boardId)
