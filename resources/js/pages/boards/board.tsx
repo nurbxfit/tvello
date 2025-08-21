@@ -1,12 +1,10 @@
 import { BoardActionsPopOver } from "@/components/task/board-actions-popover";
+import { BoardTitle } from "@/components/task/board-title";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import type { Board } from "@/types/task";
-import { Head, useForm } from "@inertiajs/react";
-import { PopoverClose } from "@radix-ui/react-popover";
-import { MoreHorizontal, X } from "lucide-react";
+import { Head } from "@inertiajs/react";
 import { useMemo } from "react";
 
 const baseBreadcrumbs: BreadcrumbItem[] = [
@@ -71,11 +69,7 @@ export default function BoardPage({ board }: { board?: Board }) {
                 {/* Fixed header */}
                 <header className="relative z-40 w-full h-14 bg-black/50 backdrop-blur-sm">
                     <div className="flex items-center justify-between h-full px-4">
-                        <div className="flex items-center gap-x-2">
-                            <h1 className="text-lg font-bold text-white truncate max-w-md">
-                                {board.title}
-                            </h1>
-                        </div>
+                        <BoardTitle board={board} />
                         <BoardActionsPopOver board={board} />
                     </div>
                 </header>
