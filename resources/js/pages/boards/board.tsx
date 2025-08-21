@@ -1,10 +1,12 @@
 import { BoardActionsPopOver } from "@/components/task/board-actions-popover";
 import { BoardTitle } from "@/components/task/board-title";
+import { ListForm } from "@/components/task/list-form";
+import { ListItem } from "@/components/task/list-item";
 import { Button } from "@/components/ui/button";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
-import type { Board } from "@/types/task";
-import { Head } from "@inertiajs/react";
+import type { Board, ListWithCards } from "@/types/task";
+import { Head, usePage } from "@inertiajs/react";
 import { useMemo } from "react";
 
 const baseBreadcrumbs: BreadcrumbItem[] = [
@@ -14,8 +16,10 @@ const baseBreadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function BoardPage({ board }: { board?: Board }) {
+export default function BoardPage() {
+    const { props } = usePage<{ board: Board, lists: Array<ListWithCards> }>();
 
+    const { board, lists } = props;
 
 
     // Compute breadcrumbs without mutation
@@ -80,22 +84,14 @@ export default function BoardPage({ board }: { board?: Board }) {
                         {/* Board content */}
                         <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
                             {/* Placeholder for board lists/cards */}
-                            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <ol className="flex gap-x-3 h-full">
                                 {/* Example placeholder cards */}
-                                {[1, 2, 3].map((i) => (
-                                    <div
-                                        key={i}
-                                        className="bg-white/20 backdrop-blur-sm rounded-lg p-4 border border-white/10"
-                                    >
-                                        <h3 className="font-semibold text-white mb-2">
-                                            List {i}
-                                        </h3>
-                                        <p className="text-white/80 text-sm">
-                                            Add cards to this list...
-                                        </p>
-                                    </div>
+                                {lists.map((list, index) => (
+                                    <ListItem key={index} index={index} list={list} />
                                 ))}
-                            </div>
+                                <ListForm />
+                                <div className="flex shrink-0 w-1" />
+                            </ol>
                         </div>
                     </div>
                 </main>

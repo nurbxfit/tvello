@@ -29,16 +29,32 @@ class BoardController extends Controller {
             ->where('id', $boardId)
             ->first();
 
+        $taskLists = DB::table('task_list')
+            ->where('board_id', $boardId)
+            ->get();
+
+        $cards = DB::table('task_card')
+            ->whereIn('list_id', $taskLists->pluck('id'))
+            ->get()
+            ->groupBy('list_id');
+
+        $taskLists->transform(function ($list) use ($cards) {
+            $list->cards = $cards->get($list->id, collect());
+            return $list;
+        });
+
+
         if(!$board) {
             abort(404,"Board not found");
         }
 
         return Inertia::render("boards/board",[
-            "board"=> $board
+            "board"=> $board,
+            "lists"=> $taskLists
         ]);
     }
 
-    public function create(Request $request): RedirectResponse {
+    public function create(Request $request,string $boardId): RedirectResponse {
 
         // Validate the request
         $validated = $request->validate([
