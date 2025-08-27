@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import type { Board, ListWithCards } from "@/types/task";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { Head, usePage } from "@inertiajs/react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const baseBreadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,7 +21,7 @@ export default function BoardPage() {
     const { props } = usePage<{ board: Board, lists: Array<ListWithCards> }>();
 
     const { board, lists } = props;
-
+    const [orderedLists, setOrderedLists] = useState(lists);
 
     // Compute breadcrumbs without mutation
     const breadcrumbs = useMemo(() => {
@@ -34,6 +35,89 @@ export default function BoardPage() {
             }
         ];
     }, [board]);
+
+    useEffect(() => {
+        setOrderedLists(lists)
+    }, [lists])
+
+    function reorder<T>(list: T[], startIndex: number, endIndex: number) {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+        return result;
+    }
+
+    const onDragEnd = (result: any) => {
+        const { destination, source, type } = result;
+        if (!destination) {
+            return;
+        }
+
+        // if drop in the same position
+        if (destination.droppableId == source.droppableId && destination.index == source.index) {
+            return
+        }
+
+        // if user move a list instead of card
+        if (type == "list") {
+            const items = reorder(orderedLists, source.index, destination.index).map((item, index) => ({ ...item, order: index }));
+            setOrderedLists(items);
+        }
+
+        // if user move a card
+        if (type == "card") {
+            let newOrderedLists = [...orderedLists];
+
+            const sourceList = newOrderedLists.find(list => list.id === source.droppableId);
+            const destinationList = newOrderedLists.find(list => list.id === destination.droppableId);
+
+            if (!sourceList || !destinationList) {
+                return;
+            }
+
+            // check if list dont have card, we give one empty
+            if (!sourceList.cards) {
+                sourceList.cards = [];
+            }
+
+            if (!destinationList.cards) {
+                destinationList.cards = [];
+            }
+
+            // if user move card within the same list but diff order
+            if (source.droppableId == destination.droppableId) {
+                const reorderedCards = reorder(sourceList.cards, source.index, destination.index);
+                // change the order
+                reorderedCards.forEach((card, index) => {
+                    card.order = index
+                })
+
+                sourceList.cards = reorderedCards;
+                setOrderedLists(newOrderedLists);
+
+            } else {
+                // user drop into new list
+                // remove card from source, and append to destionation
+                const [movedCard] = sourceList.cards.splice(source.index, 1);
+
+                movedCard.list_id = destination.droppableId;
+
+                destinationList.cards.splice(destination.index, 0, movedCard)
+
+                sourceList.cards.forEach((card, index) => {
+                    card.order = index
+                })
+
+                destinationList.cards.forEach((card, index) => {
+                    card.order = index
+                })
+
+                setOrderedLists(newOrderedLists)
+
+            }
+
+        }
+    }
 
     // seems unecessary because we already handled this on php
     if (!board) {
@@ -82,16 +166,28 @@ export default function BoardPage() {
                 <main className="relative z-10 overflow-auto">
                     <div className="p-4 min-h-full">
                         {/* Board content */}
-                        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
+                        <div className="p-4 h-full overflow-x-auto">
                             {/* Placeholder for board lists/cards */}
-                            <ol className="flex gap-x-3 h-full">
-                                {/* Example placeholder cards */}
-                                {lists.map((list, index) => (
-                                    <ListItem key={index} index={index} list={list} />
-                                ))}
-                                <ListForm />
-                                <div className="flex shrink-0 w-1" />
-                            </ol>
+                            <DragDropContext onDragEnd={onDragEnd}>
+                                <Droppable droppableId="list" type="list" direction="horizontal">
+                                    {
+                                        (provided) => (
+                                            <ol
+                                                {...provided.droppableProps}
+                                                ref={provided.innerRef}
+                                                className="flex gap-x-3 h-full">
+                                                {orderedLists.map((list, index) => (
+                                                    <ListItem key={list.id} list={list} index={index} />
+                                                ))}
+                                                {provided.placeholder}
+                                                <ListForm />
+                                                <div className="flex shrink-0 w-1" />
+                                            </ol>
+                                        )
+                                    }
+                                </Droppable>
+                            </DragDropContext>
+
                         </div>
                     </div>
                 </main>
