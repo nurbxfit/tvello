@@ -12,7 +12,7 @@ interface ListActionsProps {
     list: List,
     onAddCard: () => void;
 }
-export const ListActions = ({ list }: ListActionsProps) => {
+export const ListActions = ({ list, onAddCard }: ListActionsProps) => {
 
     const { props } = usePage<{ board: Board }>()
     const { board } = props;
@@ -48,7 +48,7 @@ export const ListActions = ({ list }: ListActionsProps) => {
                         <X className="h-4 w-4" />
                     </Button>
                 </PopoverClose>
-                <Button variant={"ghost"}
+                <Button onClick={onAddCard} variant={"ghost"}
                     className="rounded-none w-full h-auto p-2 px-5 justify-start
                     font-normal text-sm
                     ">

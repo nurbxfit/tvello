@@ -27,9 +27,9 @@ export const ListItem = ({ list, index }: ListItemProps) => {
         }
     }, [isEditing]);
 
-    const onAddCard = () => {
-        // do something ?
-    }
+
+
+
     return (
         <li className="shrink-0 h-full w-[272px] select-none">
             <div
@@ -38,7 +38,7 @@ export const ListItem = ({ list, index }: ListItemProps) => {
                     <div className="w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent">
                         {list.title}
                     </div>
-                    <ListActions onAddCard={onAddCard} list={list} />
+                    <ListActions onAddCard={enableEditing} list={list} />
                 </div>
                 <ol
                     className={
