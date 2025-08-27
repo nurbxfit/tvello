@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Tasks\BoardController;
 use App\Http\Controllers\Tasks\ListController;
+use App\Http\Controllers\Tasks\CardController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -28,8 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('boards/{boardId}/lists/{listId}', [ListController::class, 'update'])->name('board.lists.update'); 
     Route::delete('boards/{boardId}/lists/{listId}', [ListController::class, 'destroy'])->name('board.lists.destroy'); 
     
-
-
+    // Route::post("boards/{boardId}/lists/{listId}/cards",[CardController::class,'store'])->name("board.lists.cards.store");
+    // Route::put('boards/{boardId}/lists/{listId}/cards/{cardId}', [CardController::class, 'update'])->name('board.lists.cards.update'); 
+    // Route::delete('boards/{boardId}/lists/{listId}/cards/{cardId}', [CardController::class, 'destroy'])->name('board.lists.cards.destroy'); 
+    Route::resource('boards.lists.cards',CardController::class)->only(['store','update','destroy']);
 });
 
 require __DIR__.'/settings.php';

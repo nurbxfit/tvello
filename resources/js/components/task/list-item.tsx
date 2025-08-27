@@ -1,12 +1,31 @@
 import { cn } from "@/lib/utils"
 import { ListWithCards } from "@/types/task"
 import { ListActions } from "./list-actions"
+import { CardForm } from "./card-form"
+import { ComponentRef, useEffect, useRef, useState } from "react"
+import { CardItem } from "./card-item"
 
 type ListItemProps = {
     list: ListWithCards
     index: number
 }
 export const ListItem = ({ list, index }: ListItemProps) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const textAreaRef = useRef<ComponentRef<"textarea">>(null);
+
+    const disableEditing = () => {
+        setIsEditing(false);
+    }
+
+    const enableEditing = () => {
+        setIsEditing(true);
+    }
+
+    useEffect(() => {
+        if (isEditing && textAreaRef.current) {
+            textAreaRef.current?.focus();
+        }
+    }, [isEditing]);
 
     const onAddCard = () => {
         // do something ?
@@ -28,14 +47,12 @@ export const ListItem = ({ list, index }: ListItemProps) => {
                         )
                     }>
                     {list.cards.map((card, index) => {
-                        return ( // <CardItem index={index} key={card.id} data={card} />
-                            <div>
-                                {card.title}
-                            </div>
+                        return (
+                            <CardItem index={index} key={card.id} data={card} />
                         )
                     })}
                 </ol>
-                {/* <CardForm listId={list.id} ref={textAreaRef} isEditing={isEditing} enableEditing={enableEditing} disableEditing={disableEditing} /> */}
+                <CardForm listId={list.id} ref={textAreaRef} isEditing={isEditing} enableEditing={enableEditing} disableEditing={disableEditing} />
             </div>
         </li>
     )
