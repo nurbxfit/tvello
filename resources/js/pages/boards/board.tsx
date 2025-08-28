@@ -7,7 +7,7 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import type { Board, ListWithCards } from "@/types/task";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { useEffect, useMemo, useState } from "react";
 
 const baseBreadcrumbs: BreadcrumbItem[] = [
@@ -62,6 +62,21 @@ export default function BoardPage() {
         if (type == "list") {
             const items = reorder(orderedLists, source.index, destination.index).map((item, index) => ({ ...item, order: index }));
             setOrderedLists(items);
+            // update list in db
+            // Remove 'cards' property for FormDataConvertible compatibility error
+            const serializedLists = items.map(({ cards, ...rest }) => rest);
+            router.put(route('board.lists.updateMany', board.id), {
+                lists: serializedLists
+            },
+                {
+                    onSuccess: (data) => {
+                        console.log('success', data)
+                    },
+                    onError: (error) => {
+                        console.error(error)
+                    }
+                }
+            )
         }
 
         // if user move a card
@@ -95,6 +110,20 @@ export default function BoardPage() {
                 sourceList.cards = reorderedCards;
                 setOrderedLists(newOrderedLists);
 
+                const serializedLists = reorderedCards.map(({ id, title, order }) => ({
+                    id,
+                    title,
+                    order
+                }))
+
+                router.put(route('boards.lists.cards.updateMany', [board.id, destinationList.id]), {
+                    cards: serializedLists
+                }, {
+                    onError: (error) => {
+                        console.error(error)
+                    }
+                })
+
             } else {
                 // user drop into new list
                 // remove card from source, and append to destionation
@@ -113,7 +142,22 @@ export default function BoardPage() {
                 })
 
                 setOrderedLists(newOrderedLists)
+                // update cards in db
 
+                // Serialize cards to plain objects for FormDataConvertible compatibility
+                const serializedCards = destinationList.cards.map(({ id, title, order }) => ({
+                    id,
+                    title,
+                    order
+                }))
+
+                router.put(route('boards.lists.cards.updateMany', [board.id, destinationList.id]), {
+                    cards: serializedCards
+                }, {
+                    onError: (error) => {
+                        console.error(error)
+                    }
+                })
             }
 
         }

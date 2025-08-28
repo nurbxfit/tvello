@@ -31,10 +31,12 @@ class BoardController extends Controller {
 
         $taskLists = DB::table('task_list')
             ->where('board_id', $boardId)
+            ->orderBy('order','asc')
             ->get();
 
         $cards = DB::table('task_card')
             ->whereIn('list_id', $taskLists->pluck('id'))
+            ->orderBy('order','asc')
             ->get()
             ->groupBy('list_id');
 
