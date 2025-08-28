@@ -207,10 +207,10 @@ export default function BoardPage() {
                 </header>
 
                 {/* Main content */}
-                <main className="relative z-10 overflow-auto">
+                <main className="relative z-10 ">
                     <div className="p-4 min-h-full">
                         {/* Board content */}
-                        <div className="p-4 h-full overflow-x-auto">
+                        <div className="p-4 h-full ">
                             {/* Placeholder for board lists/cards */}
                             <DragDropContext onDragEnd={onDragEnd}>
                                 <Droppable droppableId="list" type="list" direction="horizontal">
