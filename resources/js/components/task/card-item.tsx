@@ -4,13 +4,10 @@ import { Draggable } from "@hello-pangea/dnd"
 
 type CardItemProps = {
     index: number,
-    data: Card
+    data: Card,
+    onClick: (data: Card) => void;
 }
-export const CardItem = ({ index, data }: CardItemProps) => {
-    // const { onOpen } = useCardModal();
-    const openModal = (id: string) => {
-        console.log('opening:', id);
-    }
+export const CardItem = ({ index, data, onClick }: CardItemProps) => {
     return (
         <Draggable draggableId={data.id} index={index}>
             {(provided) => (
@@ -18,7 +15,7 @@ export const CardItem = ({ index, data }: CardItemProps) => {
                     {...provided.dragHandleProps}
                     {...provided.draggableProps}
                     ref={provided.innerRef}
-                    onClick={() => openModal(data.id)}
+                    onClick={() => onClick(data)}
                     role="button" className="truncase border-2 border-transparent hover:border-black py-2 px-3 text-sm bg-white rounded-md shadow-sm">
                     {data.title}
                 </div>

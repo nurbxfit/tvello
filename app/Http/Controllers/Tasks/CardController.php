@@ -76,9 +76,30 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $board)
+    public function update(Request $request, string $board, string $list, string $card)
     {
-        
+        abort_if(!DB::table('task_board')->where('id', $board)->exists(), 404, 'Board not found!');
+        abort_if(!DB::table('task_list')->where('id', $list)->exists(), 404, 'List not found!');
+        abort_if(!DB::table('task_card')->where('id', $card)->exists(), 404, 'Card not found!');
+
+        $validated = $request->validate([
+            'title' => 'sometimes|string|max:255',
+            'order' =>'sometimes|numeric',
+            'description' => 'sometimes|nullable|string|max:255',
+        ]);
+
+        // dd($validated);
+        $validated['updated_at'] = now();
+
+        $affected = DB::table('task_card')
+            ->where('id',$card)
+            ->update($validated);
+
+        if($affected === 0){
+            abort(404, 'Card not found');
+        }
+    
+        return redirect()->route('board',$board);
     }
 
 
@@ -112,8 +133,16 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $boardId,  string $listId, string $cardId)
     {
-        //
+        abort_if(!DB::table('task_board')->where('id', $boardId)->exists(), 404, 'Board not found!');
+        abort_if(!DB::table('task_list')->where('id', $listId)->exists(), 404, 'List not found!');
+        abort_if(!DB::table('task_card')->where('id', $cardId)->exists(), 404, 'Card not found!');
+
+        $affected = DB::table('task_card')
+        ->where('id',$cardId)
+        ->delete();
+
+        return redirect()->route('board',$boardId);
     }
 }

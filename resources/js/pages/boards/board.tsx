@@ -1,3 +1,4 @@
+import { CardDetailModal } from "@/components/modals/card-details";
 import { BoardActionsPopOver } from "@/components/task/board-actions-popover";
 import { BoardTitle } from "@/components/task/board-title";
 import { ListForm } from "@/components/task/list-form";
@@ -5,7 +6,7 @@ import { ListItem } from "@/components/task/list-item";
 import { Button } from "@/components/ui/button";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
-import type { Board, ListWithCards } from "@/types/task";
+import type { Board, Card, ListWithCards } from "@/types/task";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { Head, router, usePage } from "@inertiajs/react";
 import { useEffect, useMemo, useState } from "react";
@@ -236,6 +237,7 @@ export default function BoardPage() {
                     </div>
                 </main>
             </div>
+
         </AppLayout>
     );
 }
