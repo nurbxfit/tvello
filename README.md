@@ -1,37 +1,55 @@
-# Simple Trello Clone
+# Tvello – Open Source Trello Clone
 
-A minimal Trello-like task board built with **Laravel**, **React**, and **Inertia.js**.  
-Nothing fancy — just me tinkering with Laravel + React full-stack workflow.
+<img src="./public/tvello.png" alt="Tvello Logo" width="80" />
 
----
-
-## Features
-- User auth (Laravel built-in)
-- Create and manage boards
-- Add tasks inside boards
-- Basic CRUD setup
-- Inertia.js for SPA-like feel
+**Tvello** is a minimal Trello-like task board built with **Laravel**, **React**, and **Inertia.js**.  
+Lightweight, easy to run locally with **SQLite**, and perfect for learning or small projects.
 
 ---
 
-## Tech Stack
-- Laravel 
-- React
-- Inertia.js
-- TailwindCSS
-- SQLite
+## ✨ Features
+
+- 🔐 User authentication  
+- 📋 Create and manage boards  
+- 📝 Add and organize tasks inside boards  
+- 🔄 Basic CRUD functionality  
+- ⚡ SPA-like experience powered by Inertia.js  
+- 🎨 TailwindCSS styling  
 
 ---
 
-## Getting Started
+## 🖼️ Screenshots
+
+Boards overview page  
+![Boards](./screenshots/boards.png)
+
+Board with lists & cards  
+![Board](./screenshots/board.png)
+
+Card detail modal  
+![Card Details](./screenshots/card-details.png)
+
+---
+
+## 🛠️ Tech Stack
+
+- [Laravel](https://laravel.com/) – Backend framework  
+- [React](https://react.dev/) – Frontend library  
+- [Inertia.js](https://inertiajs.com/) – SPA bridge  
+- [TailwindCSS](https://tailwindcss.com/) – Styling  
+- [SQLite](https://www.sqlite.org/) – Local database  
+
+---
+
+## 🚀 Getting Started
 
 Clone the repo:
 
 ```bash
 git clone https://github.com/nurbxfit/tvello.git
 cd tvello
-```
 
+```
 Install dependencies:
 
 ```bash
@@ -47,13 +65,14 @@ Start the dev servers:
 ```bash
 php artisan serve
 ```
-or 
+or
 ```bash
 composer run dev
 ```
 
 Now open http://localhost:8000
 
-## Notes
+## 📌 Notes
 
-This is mainly for learning purposes.
+This is mainly a learning project exploring the Laravel + React + Inertia full-stack workflow.
+It’s simple by design, but you can fork and expand it however you like.

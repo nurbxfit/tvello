@@ -45,7 +45,7 @@ export const BoardList = ({ boards }: BoardListProps) => {
                 >
                     <p className="text-sm">Create new board</p>
                     <span className="text-xs">
-                        5 remaining
+                        Unlimited
                     </span>
                     {/* <Hint sideOffset={40}
                         description="Free workspaces up to 5 boards. Upgrade this workspace for unlimited boards"
